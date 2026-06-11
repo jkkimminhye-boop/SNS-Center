@@ -1527,30 +1527,34 @@ ${seasoning ? '조미료 키워드 힌트: ' + seasoning : ''}
 - 음대·예술대 주제 1개 이상 포함
 - 경쟁사(유학클로버·스터디데스티니)가 약하게 다룬 틈새 주제 우선`;
 
+  const SYSTEM_TOPICS = `당신은 제이클래식(독일 유학원) 네이버 블로그 주제 추천 AI입니다. 반드시 JSON 배열만 반환하세요.`;
+
   try {
     const resp = await fetch('/api/claude', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ prompt, system: SYSTEM_BLOG, max_tokens: 2000 })
+      body: JSON.stringify({ prompt, system: SYSTEM_TOPICS, max_tokens: 2000 })
     });
     const data = await resp.json();
     const text = (data.content?.[0]?.text || '').trim();
     
     // JSON 파싱 - 여러 방법 시도
     let parsed = null;
-    // 방법1: 전체가 JSON 배열
     try { parsed = JSON.parse(text); } catch(e) {}
-    // 방법2: 텍스트에서 배열 추출
     if (!parsed) {
-      const m = text.match(/\[[\s\S]*\]/);
+      const m = text.match(/\[[\s\S]*?\]/s);
       if (m) { try { parsed = JSON.parse(m[0]); } catch(e) {} }
     }
-    // 방법3: 백틱 코드블록 안에서 추출
     if (!parsed) {
-      const m2 = text.match(/```(?:json)?\s*(\[[\s\S]*?\])\s*```/);
+      const m2 = text.match(/```(?:json)?\s*([\s\S]*?)\s*```/);
       if (m2) { try { parsed = JSON.parse(m2[1]); } catch(e) {} }
     }
-    if (!parsed || !Array.isArray(parsed)) throw new Error('주제 생성 실패 — 다시 시도해주세요');
+    if (!parsed || !Array.isArray(parsed) || parsed.length === 0) {
+      // 디버그: 실제 응답 표시
+      document.getElementById('blog-topic-loading').style.display = 'none';
+      document.getElementById('topic-status').textContent = '오류: ' + text.substring(0, 100);
+      return;
+    }
     
     currentTopics = parsed;
     renderTopicCards(currentTopics);
