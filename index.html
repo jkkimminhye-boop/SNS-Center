@@ -13,9 +13,9 @@
     --bg3: #f0f0f2;
     --border: rgba(0,0,0,0.08);
     --border2: rgba(0,0,0,0.14);
-    --text: #1a1a1a;
-    --text2: #555;
-    --text3: #999;
+    --text: #0d0d0d;
+    --text2: #333;
+    --text3: #666;
     --accent: #c9a84c;
     --accent2: #a8872e;
     --red: #e05555;
@@ -466,17 +466,17 @@
 </head>
 <body>
 <!-- 비밀번호 잠금 화면 -->
-<div id="lock-screen" style="position:fixed;inset:0;background:#0f0f11;z-index:99999;display:flex;align-items:center;justify-content:center;flex-direction:column;">
+<div id="lock-screen" style="position:fixed;inset:0;background:#f5f5f3;z-index:99999;display:flex;align-items:center;justify-content:center;flex-direction:column;">
   <div style="text-align:center;margin-bottom:32px;">
     <div style="font-size:13px;font-weight:700;letter-spacing:0.12em;color:#c9a84c;margin-bottom:6px;">JKLASSIK</div>
-    <div style="font-size:12px;color:#555;letter-spacing:0.06em;">SNS 마케팅 대시보드</div>
+    <div style="font-size:12px;color:#888;letter-spacing:0.06em;">SNS 마케팅 대시보드</div>
   </div>
-  <div style="background:#17171a;border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:28px 32px;width:300px;">
-    <div style="font-size:13px;color:#888;margin-bottom:12px;text-align:center;">비밀번호를 입력하세요</div>
+  <div style="background:#fff;border:1px solid #e0e0e0;border-radius:12px;padding:28px 32px;width:300px;box-shadow:0 4px 20px rgba(0,0,0,0.08);">
+    <div style="font-size:13px;color:#666;margin-bottom:12px;text-align:center;">비밀번호를 입력하세요</div>
     <input id="lock-input" type="password" placeholder="Password"
-      style="width:100%;background:#1e1e22;border:1px solid rgba(255,255,255,0.14);border-radius:8px;padding:10px 14px;color:#f0f0f0;font-size:14px;outline:none;box-sizing:border-box;margin-bottom:12px;" autofocus />
+      style="width:100%;background:#f9f9f9;border:1px solid #ddd;border-radius:8px;padding:10px 14px;color:#1a1a1a;font-size:14px;outline:none;box-sizing:border-box;margin-bottom:12px;" autofocus />
     <button id="lock-btn"
-      style="width:100%;background:#c9a84c;border:none;border-radius:8px;padding:10px;color:#000;font-size:13px;font-weight:700;cursor:pointer;letter-spacing:0.04em;">
+      style="width:100%;background:#c9a84c;border:none;border-radius:8px;padding:10px;color:#fff;font-size:13px;font-weight:700;cursor:pointer;letter-spacing:0.04em;">
       입장하기
     </button>
     <div id="lock-error" style="color:#e05555;font-size:12px;text-align:center;margin-top:10px;display:none;">비밀번호가 올바르지 않습니다.</div>
@@ -560,6 +560,11 @@
         <div class="nav-dot" style="background:#e8884a"></div>
         <span>알림 목록</span>
         <span id="notif-badge" style="display:none;margin-left:auto;background:#e05555;color:#fff;font-size:10px;font-weight:700;border-radius:10px;padding:1px 6px;">0</span>
+      </div>
+      <div class="nav-item" onclick="showPage('vault', this)" id="nav-vault">
+        <div class="nav-dot" style="background:#7c9ef5"></div>
+        <span>결과 보관함</span>
+        <span id="vault-badge" style="display:none;margin-left:auto;background:#7c9ef5;color:#fff;font-size:10px;font-weight:700;border-radius:10px;padding:1px 6px;">0</span>
       </div>
     </div>
   </nav>
@@ -658,50 +663,45 @@
   <div class="page" id="page-plan">
     <div class="page-header">
       <div class="page-title">주간 콘텐츠 계획</div>
-      <button class="btn btn-primary" onclick="generatePlan()">AI 계획 생성 ↗</button>
     </div>
 
-    <div class="week-grid">
-      <div class="week-day">
-        <div class="week-day-name">월</div>
-        <div class="week-task" style="background:rgba(76,175,122,0.15);color:var(--naver)">블로그 발행</div>
-      </div>
-      <div class="week-day">
-        <div class="week-day-name">화</div>
-        <div class="week-task" style="background:rgba(224,85,85,0.15);color:var(--youtube)">유튜브 쇼츠</div>
-      </div>
-      <div class="week-day">
-        <div class="week-day-name">수</div>
-        <div class="week-task" style="background:rgba(225,48,108,0.15);color:var(--insta)">인스타 카드뉴스</div>
-      </div>
-      <div class="week-day">
-        <div class="week-day-name">목</div>
-        <div class="week-task" style="background:rgba(225,48,108,0.15);color:var(--insta)">인스타 스토리</div>
-      </div>
-      <div class="week-day">
-        <div class="week-day-name">금</div>
-        <div class="week-task" style="background:rgba(201,168,76,0.15);color:var(--kakao)">카카오 소식</div>
-        <div class="week-task" style="background:rgba(225,48,108,0.15);color:var(--insta);margin-top:4px">인스타 릴스</div>
-      </div>
-      <div class="week-day">
-        <div class="week-day-name">토</div>
-      </div>
-      <div class="week-day">
-        <div class="week-day-name">일</div>
-        <div class="week-task" style="background:rgba(224,85,85,0.15);color:var(--youtube)">유튜브 롱폼 (격주)</div>
-      </div>
+    <!-- 이번 주 캘린더 (확정된 항목 반영) -->
+    <div class="week-grid" id="week-calendar">
+      <div class="week-day"><div class="week-day-name">월</div><div id="cal-mon"></div></div>
+      <div class="week-day"><div class="week-day-name">화</div><div id="cal-tue"></div></div>
+      <div class="week-day"><div class="week-day-name">수</div><div id="cal-wed"></div></div>
+      <div class="week-day"><div class="week-day-name">목</div><div id="cal-thu"></div></div>
+      <div class="week-day"><div class="week-day-name">금</div><div id="cal-fri"></div></div>
+      <div class="week-day"><div class="week-day-name">토</div><div id="cal-sat"></div></div>
+      <div class="week-day"><div class="week-day-name">일</div><div id="cal-sun"></div></div>
     </div>
 
-    <div class="card" style="margin-top:16px">
+    <!-- 생성 입력 -->
+    <div class="card" style="margin-top:16px;margin-bottom:12px">
       <div class="card-title">AI 주간 계획 생성</div>
       <div class="input-row">
         <div class="input-group" style="grid-column:1/-1">
-          <label>이번 주 메인 주제 (선택사항)</label>
+          <label>이번 주 메인 주제 (선택 — 비워두면 트렌드 기반 자동 제안)</label>
           <input type="text" id="week-topic" placeholder="예: 독일 학생 보험 TK vs DAK 비교" />
         </div>
       </div>
-      <button class="btn btn-primary" onclick="generatePlan()" style="margin-bottom:12px">계획 생성 ↗</button>
-      <div class="ai-output" id="plan-output">API 키를 입력하고 생성 버튼을 누르세요.</div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <button class="btn btn-primary" onclick="generatePlan()">계획 생성 ↗</button>
+        <span id="plan-status" style="font-size:12px;color:var(--text3)"></span>
+      </div>
+    </div>
+
+    <!-- 채널별 제안 카드 -->
+    <div id="plan-cards" style="display:none">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+        <div style="font-size:13px;font-weight:600;color:var(--text)">채널별 이번 주 제안 — 확정·재생성·제외 선택</div>
+        <button onclick="confirmAllPlan()" style="background:var(--accent);border:none;border-radius:7px;padding:7px 16px;color:#fff;font-size:12px;font-weight:600;cursor:pointer">✅ 선택 확정 → 캘린더 반영</button>
+      </div>
+      <div id="plan-card-list" style="display:grid;grid-template-columns:1fr 1fr;gap:12px"></div>
+    </div>
+
+    <div id="plan-loading" style="display:none">
+      <div class="ai-output loading"><span style="color:var(--accent)">채널별 주간 계획 생성 중... (30초~1분 소요)</span></div>
     </div>
   </div>
 
@@ -853,7 +853,7 @@
             <div style="font-size:13px;font-weight:600;color:var(--text)">추천 주제 — 클릭하면 바로 글 작성</div>
             <button onclick="suggestMoreTopics()" style="background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:5px 12px;color:var(--text2);font-size:12px;cursor:pointer">🔄 다른 주제 5개 더</button>
           </div>
-          <div id="topic-card-list" style="display:flex;flex-direction:column;gap:8px"></div>
+          <div id="topic-card-list" style="display:grid;grid-template-columns:1fr 1fr;gap:10px"></div>
         </div>
 
         <div id="blog-topic-loading" style="display:none">
@@ -1252,6 +1252,22 @@
     </div>
   </div>
 
+  <!-- 결과 보관함 -->
+  <div class="page" id="page-vault">
+    <div class="page-header">
+      <div class="page-title">결과 보관함 <span class="channel-badge" style="background:rgba(124,158,245,0.15);color:#7c9ef5">Vault</span></div>
+    </div>
+    <div class="card" style="margin-bottom:12px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+        <div class="card-title" style="margin:0">저장된 생성 결과</div>
+        <button onclick="clearVault()" style="background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:4px 10px;color:var(--text2);font-size:12px;cursor:pointer">전체 삭제</button>
+      </div>
+      <div id="vault-list">
+        <div style="color:var(--text3);font-size:13px;padding:30px 0;text-align:center">저장된 결과가 없습니다.<br><span style="font-size:12px">블로그·인스타·유튜브 생성 완료 시 자동 저장됩니다.</span></div>
+      </div>
+    </div>
+  </div>
+
 
 </main>
 </div>
@@ -1440,6 +1456,15 @@ async function callClaudeWithSystem(prompt, outputId, systemPrompt) {
     if(data.content && data.content[0]) {
       out.textContent = data.content[0].text;
       out.className = 'ai-output done';
+      // 보관함 자동 저장
+      const labelMap = {
+        'blog-output': '블로그 원고',
+        'insta-output': '인스타그램',
+        'yt-output': '유튜브',
+        'kakao-output': '카카오',
+      };
+      const label = labelMap[outputId] || outputId;
+      saveToVault(label, data.content[0].text, outputId);
       if(outputId === 'blog-output' && document.getElementById('blog-type').value === 'full') {
         addNotification('✅ 블로그 원고 생성 완료!', '생성된 원고를 네이버 블로그에 발행한 후 아래 버튼으로 발행 완료를 기록하세요.', 'success');
       }
@@ -1454,17 +1479,231 @@ async function callClaudeWithSystem(prompt, outputId, systemPrompt) {
 }
 
 // 주간 계획 생성
-function generatePlan() {
-  const topic = document.getElementById('week-topic').value;
+// =====================
+// 주간 계획 시스템
+// =====================
+
+let planItems = {}; // { blog, insta_reels, insta_card, youtube, kakao }
+
+const CHANNEL_META = {
+  blog:        { label: '네이버 블로그', color: 'var(--naver)',   bg: 'rgba(76,175,122,0.12)',   emoji: '📝', day: '월/목' },
+  insta_reels: { label: '인스타 릴스',   color: 'var(--insta)',   bg: 'rgba(225,48,108,0.12)',   emoji: '🎬', day: '화/금' },
+  insta_card:  { label: '인스타 카드뉴스', color: 'var(--insta)', bg: 'rgba(225,48,108,0.12)',   emoji: '🖼️', day: '수' },
+  youtube:     { label: '유튜브 쇼츠',   color: 'var(--youtube)', bg: 'rgba(224,85,85,0.12)',    emoji: '▶️', day: '화/일' },
+  kakao:       { label: '카카오 소식',   color: 'var(--kakao)',   bg: 'rgba(201,168,76,0.12)',   emoji: '💬', day: '금' },
+};
+
+// 상태: 'pending' | 'confirmed' | 'excluded'
+let planStatus = {};
+
+async function generatePlan() {
+  const topic = document.getElementById('week-topic').value.trim();
   const today = new Date();
+  const year = today.getFullYear();
   const month = today.getMonth() + 1;
-  callClaude(
-    `이번 주(${month}월) 제이클래식 4채널 주간 콘텐츠 계획을 짜주세요.
-${topic ? '메인 주제: ' + topic : '이번 시즌에 맞는 주제를 추천해서 사용하세요.'}
-채널별 산출물: 블로그 완성 원고 주제+키워드, 인스타 릴스 주제, 카드뉴스 주제, 유튜브 쇼츠 주제, 카카오 소식 주제.
-요일별 발행 일정도 포함. 실행 가능하게 간결하게.`,
-    'plan-output'
-  );
+
+  document.getElementById('plan-cards').style.display = 'none';
+  document.getElementById('plan-loading').style.display = 'block';
+  document.getElementById('plan-status').textContent = '생성 중...';
+
+  const prompt = `제이클래식(독일 유학원) 이번 주(${year}년 ${month}월) SNS 채널별 콘텐츠 계획을 추천해주세요.
+${topic ? '메인 주제: ' + topic : '트렌드 기반으로 자유롭게 제안'}
+
+반드시 아래 JSON 형식으로만 응답. 설명·마크다운 없이 순수 JSON만:
+{
+  "blog":        {"title":"제목","keyword":"메인키워드","sub":"서브키워드1,서브키워드2","day":"발행요일","reason":"추천이유"},
+  "insta_reels": {"title":"주제","format":"릴스 형식 설명","day":"발행요일","reason":"추천이유"},
+  "insta_card":  {"title":"주제","format":"카드뉴스 형식 설명","day":"발행요일","reason":"추천이유"},
+  "youtube":     {"title":"주제","format":"쇼츠/롱폼 형식 설명","day":"발행요일","reason":"추천이유"},
+  "kakao":       {"title":"주제","format":"카카오 소식 형식 설명","day":"발행요일","reason":"추천이유"}
+}
+
+조건:
+- 각 채널 주제가 하나의 메인 테마로 연결되도록
+- 숙소/보험/어학원 서비스 전환 가능한 주제 우선
+- 제목에 연도 포함 시 반드시 ${year}년으로`;
+
+  const SYSTEM = `당신은 제이클래식 SNS 마케팅 플래너입니다. 반드시 JSON만 반환하세요.`;
+
+  try {
+    const resp = await fetch('/api/claude', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ prompt, system: SYSTEM, max_tokens: 1500 })
+    });
+    const data = await resp.json();
+    const text = (data.content?.[0]?.text || '').trim();
+
+    let parsed = null;
+    try { parsed = JSON.parse(text); } catch(e) {}
+    if (!parsed) {
+      const m = text.match(/\{[\s\S]*\}/);
+      if (m) { try { parsed = JSON.parse(m[0]); } catch(e) {} }
+    }
+
+    document.getElementById('plan-loading').style.display = 'none';
+
+    if (parsed) {
+      planItems = parsed;
+      planStatus = {};
+      Object.keys(CHANNEL_META).forEach(k => planStatus[k] = 'pending');
+      renderPlanCards();
+      document.getElementById('plan-cards').style.display = 'block';
+      document.getElementById('plan-status').textContent = '✅ 생성 완료';
+      // 보관함에 원본 저장
+      saveToVault('주간계획(원본)', JSON.stringify(parsed, null, 2), 'plan-output');
+    } else {
+      document.getElementById('plan-status').textContent = '파싱 실패 — 다시 시도해주세요';
+    }
+  } catch(e) {
+    document.getElementById('plan-loading').style.display = 'none';
+    document.getElementById('plan-status').textContent = '오류: ' + e.message;
+  }
+}
+
+function renderPlanCards() {
+  const list = document.getElementById('plan-card-list');
+  list.innerHTML = Object.entries(CHANNEL_META).map(([key, meta]) => {
+    const item = planItems[key] || {};
+    const status = planStatus[key] || 'pending';
+    const isConfirmed = status === 'confirmed';
+    const isExcluded = status === 'excluded';
+    const opacity = isExcluded ? '0.4' : '1';
+    const borderColor = isConfirmed ? meta.color : isExcluded ? 'var(--border)' : 'var(--border2)';
+
+    return `
+    <div id="plan-card-${key}" style="border:2px solid ${borderColor};border-radius:12px;padding:14px 16px;background:var(--bg1);opacity:${opacity};transition:all 0.2s">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+        <span style="background:${meta.bg};color:${meta.color};font-size:11px;font-weight:600;border-radius:6px;padding:3px 9px">${meta.emoji} ${meta.label}</span>
+        <span style="font-size:11px;color:var(--text3)">${meta.day}</span>
+      </div>
+      <div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:4px" id="plan-title-${key}">${item.title || ''}</div>
+      ${item.keyword ? `<div style="font-size:11px;color:var(--text3);margin-bottom:2px">키워드: <span style="color:${meta.color}">${item.keyword}</span>${item.sub ? ' · ' + item.sub : ''}</div>` : ''}
+      ${item.format ? `<div style="font-size:11px;color:var(--text3);margin-bottom:2px">형식: ${item.format}</div>` : ''}
+      ${item.day ? `<div style="font-size:11px;color:var(--text3);margin-bottom:4px">발행: ${item.day}</div>` : ''}
+      <div style="font-size:11px;color:var(--text2);margin-bottom:10px">${item.reason || ''}</div>
+
+      <!-- 지시 입력창 -->
+      <input type="text" id="plan-directive-${key}" placeholder="재생성 지시 (선택 — 비워두면 자동)" 
+        style="width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:7px 10px;color:var(--text);font-size:12px;outline:none;box-sizing:border-box;margin-bottom:8px" />
+
+      <!-- 액션 버튼 -->
+      <div style="display:flex;gap:6px">
+        <button onclick="setPlanStatus('${key}', 'confirmed')" 
+          style="flex:1;padding:6px 0;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;border:none;background:${isConfirmed ? meta.color : 'var(--bg3)'};color:${isConfirmed ? '#fff' : 'var(--text2)'}">
+          ✅ 확정
+        </button>
+        <button onclick="regeneratePlanItem('${key}')"
+          style="flex:1;padding:6px 0;border-radius:6px;font-size:12px;cursor:pointer;border:1px solid var(--border);background:var(--bg3);color:var(--text2)">
+          🔄 재생성
+        </button>
+        <button onclick="setPlanStatus('${key}', 'excluded')"
+          style="flex:1;padding:6px 0;border-radius:6px;font-size:12px;cursor:pointer;border:1px solid var(--border);background:${isExcluded ? '#e0555533' : 'var(--bg3)'};color:${isExcluded ? '#e05555' : 'var(--text3)'}">
+          ✗ 제외
+        </button>
+      </div>
+      <div id="plan-regen-status-${key}" style="font-size:11px;color:var(--text3);margin-top:6px;display:none"></div>
+    </div>`;
+  }).join('');
+}
+
+function setPlanStatus(key, status) {
+  // 토글: 이미 같은 상태면 pending으로
+  planStatus[key] = planStatus[key] === status ? 'pending' : status;
+  renderPlanCards();
+}
+
+async function regeneratePlanItem(key) {
+  const meta = CHANNEL_META[key];
+  const directive = document.getElementById('plan-directive-' + key)?.value.trim();
+  const statusEl = document.getElementById('plan-regen-status-' + key);
+  statusEl.style.display = 'block';
+  statusEl.textContent = '재생성 중...';
+
+  const today = new Date();
+  const year = today.getFullYear();
+  const month = today.getMonth() + 1;
+  const topic = document.getElementById('week-topic').value.trim();
+
+  const prompt = `제이클래식(독일 유학원) ${meta.label} 채널의 이번 주(${year}년 ${month}월) 콘텐츠를 1개 추천해주세요.
+${directive ? '지시사항: ' + directive : '트렌드 기반으로 자유롭게'}
+${topic ? '이번 주 메인 테마: ' + topic : ''}
+
+반드시 아래 JSON만 반환. 설명 없이:
+${ key === 'blog'
+  ? '{"title":"제목","keyword":"메인키워드","sub":"서브키워드","day":"발행요일","reason":"추천이유"}'
+  : '{"title":"주제","format":"형식 설명","day":"발행요일","reason":"추천이유"}' }`;
+
+  const SYSTEM = `당신은 제이클래식 SNS 마케팅 플래너입니다. 반드시 JSON만 반환하세요.`;
+
+  try {
+    const resp = await fetch('/api/claude', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ prompt, system: SYSTEM, max_tokens: 500 })
+    });
+    const data = await resp.json();
+    const text = (data.content?.[0]?.text || '').trim();
+    let parsed = null;
+    try { parsed = JSON.parse(text); } catch(e) {}
+    if (!parsed) {
+      const m = text.match(/\{[\s\S]*?\}/);
+      if (m) { try { parsed = JSON.parse(m[0]); } catch(e) {} }
+    }
+    if (parsed) {
+      planItems[key] = parsed;
+      planStatus[key] = 'pending';
+      renderPlanCards();
+    } else {
+      statusEl.textContent = '파싱 실패 — 다시 시도';
+    }
+  } catch(e) {
+    statusEl.textContent = '오류: ' + e.message;
+  }
+}
+
+function confirmAllPlan() {
+  const confirmed = Object.entries(planStatus).filter(([k, v]) => v === 'confirmed');
+  if (confirmed.length === 0) {
+    alert('확정된 항목이 없어요. 카드에서 ✅ 확정을 눌러주세요.');
+    return;
+  }
+
+  // 캘린더 초기화
+  ['mon','tue','wed','thu','fri','sat','sun'].forEach(d => {
+    document.getElementById('cal-' + d).innerHTML = '';
+  });
+
+  const dayMap = {
+    '월': 'mon', '화': 'tue', '수': 'wed', '목': 'thu',
+    '금': 'fri', '토': 'sat', '일': 'sun',
+    '월/목': 'mon', '화/금': 'tue', '화/일': 'tue'
+  };
+
+  confirmed.forEach(([key]) => {
+    const item = planItems[key];
+    const meta = CHANNEL_META[key];
+    const dayStr = item.day || meta.day || '';
+    // 첫 번째 요일에 배치
+    const firstDay = dayStr.split('/')[0].trim();
+    const calId = dayMap[firstDay] || dayMap[dayStr];
+    if (calId) {
+      const el = document.getElementById('cal-' + calId);
+      if (el) {
+        el.innerHTML += `<div class="week-task" style="background:${meta.bg};color:${meta.color}">${meta.emoji} ${item.title || meta.label}</div>`;
+      }
+    }
+  });
+
+  // 확정 목록 보관함 저장
+  const summary = confirmed.map(([key]) => {
+    const item = planItems[key];
+    const meta = CHANNEL_META[key];
+    return `[${meta.label}] ${item.title || ''}${item.keyword ? ' / 키워드: ' + item.keyword : ''}${item.day ? ' / 발행: ' + item.day : ''}`;
+  }).join('\n');
+  saveToVault('주간계획(확정)', summary, 'plan-output');
+
+  alert(`✅ ${confirmed.length}개 항목이 캘린더에 반영되고 보관함에 저장됐어요!`);
 }
 
 // 인스타 생성
@@ -1513,7 +1752,9 @@ async function suggestTopics() {
   document.getElementById('blog-topic-loading').style.display = 'block';
   document.getElementById('topic-status').textContent = '조사 중...';
 
+  const currentYear = new Date().getFullYear();
   const prompt = `제이클래식 네이버 블로그 포스팅 주제 5개를 추천해주세요.
+오늘 날짜: ${currentYear}년 ${new Date().getMonth()+1}월. 제목에 연도를 넣을 경우 반드시 ${currentYear}년으로 표기하세요.
 
 ${hint ? '관심 방향: ' + hint : '트렌드 기반으로 자유롭게 제안'}
 ${seasoning ? '조미료 키워드 힌트: ' + seasoning : ''}
@@ -1951,7 +2192,111 @@ function initLastPublishInfo() {
   }
 }
 
+
+// =====================
+// 결과 보관함 (Vault)
+// =====================
+
+function saveToVault(label, content, outputId) {
+  const items = JSON.parse(localStorage.getItem('jk_vault') || '[]');
+  const item = {
+    id: Date.now(),
+    label: label,
+    outputId: outputId,
+    content: content,
+    savedAt: new Date().toLocaleString('ko-KR')
+  };
+  items.unshift(item); // 최신순
+  if(items.length > 50) items.pop(); // 최대 50개
+  localStorage.setItem('jk_vault', JSON.stringify(items));
+  updateVaultBadge();
+}
+
+function updateVaultBadge() {
+  const items = JSON.parse(localStorage.getItem('jk_vault') || '[]');
+  const badge = document.getElementById('vault-badge');
+  if(items.length > 0) {
+    badge.textContent = items.length;
+    badge.style.display = 'inline';
+  } else {
+    badge.style.display = 'none';
+  }
+}
+
+function renderVault() {
+  const items = JSON.parse(localStorage.getItem('jk_vault') || '[]');
+  const list = document.getElementById('vault-list');
+  if(!list) return;
+  if(items.length === 0) {
+    list.innerHTML = '<div style="color:var(--text3);font-size:13px;padding:30px 0;text-align:center">저장된 결과가 없습니다.<br><span style="font-size:12px">블로그·인스타·유튜브 생성 완료 시 자동 저장됩니다.</span></div>';
+    return;
+  }
+  list.innerHTML = items.map(item => `
+    <div id="vault-item-${item.id}" style="border:1px solid var(--border);border-radius:10px;padding:14px 16px;margin-bottom:10px;background:var(--bg1)">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+        <div style="display:flex;align-items:center;gap:8px">
+          <span style="background:rgba(124,158,245,0.15);color:#7c9ef5;font-size:11px;font-weight:600;border-radius:6px;padding:2px 8px">${item.label}</span>
+          <span style="font-size:11px;color:var(--text3)">${item.savedAt}</span>
+        </div>
+        <div style="display:flex;gap:6px">
+          <button onclick="copyVaultItem(${item.id})" style="background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:3px 10px;color:var(--text2);font-size:11px;cursor:pointer">복사</button>
+          <button onclick="deleteVaultItem(${item.id})" style="background:transparent;border:1px solid var(--border);border-radius:6px;padding:3px 8px;color:var(--text3);font-size:11px;cursor:pointer">삭제</button>
+        </div>
+      </div>
+      <div style="font-size:12px;color:var(--text2);line-height:1.7;white-space:pre-wrap;max-height:160px;overflow:hidden;position:relative" id="vault-content-${item.id}">${item.content.substring(0, 300)}${item.content.length > 300 ? '...' : ''}</div>
+      ${item.content.length > 300 ? `<button onclick="expandVaultItem(${item.id})" style="background:transparent;border:none;color:#7c9ef5;font-size:11px;cursor:pointer;margin-top:4px;padding:0" id="vault-expand-${item.id}">▼ 전체 보기</button>` : ''}
+    </div>
+  `).join('');
+}
+
+function expandVaultItem(id) {
+  const items = JSON.parse(localStorage.getItem('jk_vault') || '[]');
+  const item = items.find(i => i.id === id);
+  if(!item) return;
+  const el = document.getElementById('vault-content-' + id);
+  const btn = document.getElementById('vault-expand-' + id);
+  if(el.style.maxHeight === 'none') {
+    el.style.maxHeight = '160px';
+    el.textContent = item.content.substring(0, 300) + '...';
+    btn.textContent = '▼ 전체 보기';
+  } else {
+    el.style.maxHeight = 'none';
+    el.textContent = item.content;
+    btn.textContent = '▲ 접기';
+  }
+}
+
+function copyVaultItem(id) {
+  const items = JSON.parse(localStorage.getItem('jk_vault') || '[]');
+  const item = items.find(i => i.id === id);
+  if(!item) return;
+  navigator.clipboard.writeText(item.content).then(() => {
+    const btn = document.querySelector(`#vault-item-${id} button`);
+    const orig = btn.textContent;
+    btn.textContent = '✅ 복사됨';
+    setTimeout(() => btn.textContent = orig, 1500);
+  });
+}
+
+function deleteVaultItem(id) {
+  let items = JSON.parse(localStorage.getItem('jk_vault') || '[]');
+  items = items.filter(i => i.id !== id);
+  localStorage.setItem('jk_vault', JSON.stringify(items));
+  updateVaultBadge();
+  renderVault();
+}
+
+function clearVault() {
+  if(!confirm('보관함을 전체 삭제할까요?')) return;
+  localStorage.removeItem('jk_vault');
+  updateVaultBadge();
+  renderVault();
+}
+
+// showPage 후크: vault 탭 열 때 렌더
+
 // 초기화
+  updateVaultBadge();
 document.addEventListener('DOMContentLoaded', function() {
   renderNotifBadge();
   renderNotifList();
