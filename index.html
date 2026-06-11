@@ -8,24 +8,24 @@
   @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=DM+Mono:wght@400;500&display=swap');
 
   :root {
-    --bg: #0f0f11;
-    --bg2: #17171a;
-    --bg3: #1e1e22;
-    --border: rgba(255,255,255,0.08);
-    --border2: rgba(255,255,255,0.14);
-    --text: #f0f0f0;
-    --text2: #888;
-    --text3: #555;
+    --bg: #f5f5f7;
+    --bg2: #ffffff;
+    --bg3: #f0f0f2;
+    --border: rgba(0,0,0,0.08);
+    --border2: rgba(0,0,0,0.14);
+    --text: #1a1a1a;
+    --text2: #555;
+    --text3: #999;
     --accent: #c9a84c;
     --accent2: #a8872e;
     --red: #e05555;
-    --green: #4caf7a;
-    --blue: #5b8df0;
-    --purple: #9b72e8;
+    --green: #3a9e69;
+    --blue: #3a6fd8;
+    --purple: #7b52c8;
     --orange: #e8884a;
     --insta: #e1306c;
     --youtube: #e05555;
-    --naver: #4caf7a;
+    --naver: #3a9e69;
     --kakao: #c9a84c;
   }
 
@@ -1513,28 +1513,18 @@ async function suggestTopics() {
   document.getElementById('blog-topic-loading').style.display = 'block';
   document.getElementById('topic-status').textContent = '조사 중...';
 
-  const prompt = `제이클래식 네이버 블로그 주제를 5개 추천해주세요.
+  const prompt = `제이클래식 네이버 블로그 포스팅 주제 5개를 추천해주세요.
 
 ${hint ? '관심 방향: ' + hint : '트렌드 기반으로 자유롭게 제안'}
 ${seasoning ? '조미료 키워드 힌트: ' + seasoning : ''}
 
-아래 형식으로 정확히 JSON만 반환하세요 (다른 텍스트 없이):
-[
-  {
-    "title": "제목 후보",
-    "keyword": "메인 키워드",
-    "sub": "서브 키워드1, 서브키워드2",
-    "target": "타깃 독자",
-    "reason": "추천 이유 한 줄",
-    "service": "연결 서비스"
-  }
-]
+반드시 아래 JSON 배열 형식으로만 응답하세요. 설명이나 마크다운 없이 순수 JSON만:
+[{"title":"제목","keyword":"메인키워드","sub":"서브키워드1,서브키워드2","target":"타깃독자","reason":"추천이유","service":"연결서비스"},{"title":"...","keyword":"...","sub":"...","target":"...","reason":"...","service":"..."},{"title":"...","keyword":"...","sub":"...","target":"...","reason":"...","service":"..."},{"title":"...","keyword":"...","sub":"...","target":"...","reason":"...","service":"..."},{"title":"...","keyword":"...","sub":"...","target":"...","reason":"...","service":"..."}]
 
-조건:
-- 최근 발행과 중복 없는 신선한 주제
+주제 선정 조건:
 - 입시·비용·현지팁 우선 (조회수 높은 유형)
-- 서비스 전환 가능한 주제 포함 (숙소·보험·어학원)
-- 음대·예술대 주제 1개 이상 포함 권장
+- 서비스 전환 가능 주제 포함 (숙소·보험·어학원)
+- 음대·예술대 주제 1개 이상 포함
 - 경쟁사(유학클로버·스터디데스티니)가 약하게 다룬 틈새 주제 우선`;
 
   try {
@@ -1544,13 +1534,25 @@ ${seasoning ? '조미료 키워드 힌트: ' + seasoning : ''}
       body: JSON.stringify({ prompt, system: SYSTEM_BLOG, max_tokens: 2000 })
     });
     const data = await resp.json();
-    const text = data.content?.[0]?.text || '';
+    const text = (data.content?.[0]?.text || '').trim();
     
-    // JSON 파싱
-    const jsonMatch = text.match(/\[[\s\S]*\]/);
-    if (!jsonMatch) throw new Error('JSON 파싱 실패');
+    // JSON 파싱 - 여러 방법 시도
+    let parsed = null;
+    // 방법1: 전체가 JSON 배열
+    try { parsed = JSON.parse(text); } catch(e) {}
+    // 방법2: 텍스트에서 배열 추출
+    if (!parsed) {
+      const m = text.match(/\[[\s\S]*\]/);
+      if (m) { try { parsed = JSON.parse(m[0]); } catch(e) {} }
+    }
+    // 방법3: 백틱 코드블록 안에서 추출
+    if (!parsed) {
+      const m2 = text.match(/```(?:json)?\s*(\[[\s\S]*?\])\s*```/);
+      if (m2) { try { parsed = JSON.parse(m2[1]); } catch(e) {} }
+    }
+    if (!parsed || !Array.isArray(parsed)) throw new Error('주제 생성 실패 — 다시 시도해주세요');
     
-    currentTopics = JSON.parse(jsonMatch[0]);
+    currentTopics = parsed;
     renderTopicCards(currentTopics);
     
     document.getElementById('blog-topic-loading').style.display = 'none';
@@ -1583,10 +1585,15 @@ async function suggestMoreTopics() {
     });
     const data = await resp.json();
     const text = data.content?.[0]?.text || '';
-    const jsonMatch = text.match(/\[[\s\S]*\]/);
-    if (!jsonMatch) throw new Error('JSON 파싱 실패');
+    let parsed2 = null;
+    try { parsed2 = JSON.parse(text); } catch(e) {}
+    if (!parsed2) {
+      const m = text.match(/\[[\s\S]*\]/);
+      if (m) { try { parsed2 = JSON.parse(m[0]); } catch(e) {} }
+    }
+    if (!parsed2 || !Array.isArray(parsed2)) throw new Error('주제 생성 실패 — 다시 시도해주세요');
     
-    const newTopics = JSON.parse(jsonMatch[0]);
+    const newTopics = parsed2;
     currentTopics = [...currentTopics, ...newTopics];
     renderTopicCards(currentTopics);
     
