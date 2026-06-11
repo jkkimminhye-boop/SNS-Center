@@ -1692,8 +1692,12 @@ function closePopup() {
 
 function goToBlog() {
   closePopup();
-  const blogNav = document.querySelector('[onclick*="showPage('blog'"]');
-  if(blogNav) blogNav.click();
+  // 블로그 페이지로 이동
+  document.querySelectorAll('.nav-item').forEach(function(el) {
+    if(el.textContent.includes('네이버블로그') || el.getAttribute('onclick') && el.getAttribute('onclick').includes('blog')) {
+      el.click();
+    }
+  });
 }
 
 // 발행 공백 체크 (페이지 로드 시)
